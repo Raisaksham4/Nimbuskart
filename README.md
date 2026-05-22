@@ -36,3 +36,77 @@ The tool identifies unused cloud resources, estimates monthly waste, generates r
 ├── samples/
 ├── README.md
 ```
+
+## Local Setup
+
+### Prerequisites
+
+- Python 3.13+
+- Terraform
+- Docker
+- LocalStack
+- terraform-local
+
+### Install Dependencies
+
+```bash
+pip install -r janitor/requirements.txt
+```
+
+### Start LocalStack
+
+```bash
+docker run -d -p 4566:4566 localstack/localstack:3.5
+```
+
+### Initialize Terraform
+
+```bash
+cd terraform
+tflocal init
+tflocal apply -auto-approve
+```
+
+## Running the Janitor
+
+### Dry Run Mode
+
+```bash
+python janitor/janitor.py
+```
+
+### Delete Mode
+
+```bash
+python janitor/janitor.py --delete
+```
+
+## GitHub Actions Workflow
+
+The project includes a GitHub Actions workflow that:
+
+1. Starts LocalStack
+2. Initializes Terraform infrastructure
+3. Provisions sample AWS resources
+4. Runs the janitor scanner
+5. Uploads generated reports as artifacts
+
+## Sample Outputs
+
+Example outputs are available under:
+
+```text
+samples/
+```
+
+- `sample-report.json`
+- `sample-summary.md`
+
+## Future Improvements
+
+- Slack/Discord notifications
+- Multi-account AWS scanning
+- CloudWatch integration
+- Cost Explorer integration
+- Automated cleanup scheduling
+- Additional orphan resource detection
