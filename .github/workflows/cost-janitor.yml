@@ -27,6 +27,9 @@ jobs:
             sleep 5
           done
 
+      - name: Check LocalStack logs
+        run: docker logs localstack-main
+
       - name: Checkout repository
         uses: actions/checkout@v4
 
