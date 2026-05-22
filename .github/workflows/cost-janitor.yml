@@ -28,6 +28,9 @@ jobs:
         with:
           python-version: "3.13"
 
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+
       - name: Install Terraform Local
         run: pip install terraform-local
 
