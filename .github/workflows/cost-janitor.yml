@@ -1,0 +1,69 @@
+name: Cost Janitor
+
+on:
+  pull_request:
+
+jobs:
+  janitor:
+    runs-on: ubuntu-latest
+
+    services:
+      localstack:
+        image: localstack/localstack
+        ports:
+          - 4566:4566
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install Terraform Local
+        run: pip install terraform-local
+
+      - name: Install Python dependencies
+        run: pip install -r janitor/requirements.txt
+
+      - name: Terraform Init
+        working-directory: terraform
+        run: tflocal init
+
+      - name: Terraform Apply
+        working-directory: terraform
+        run: tflocal apply -auto-approve
+
+      - name: Run Cost Janitor
+        run: python janitor/janitor.py
+        continue-on-error: true
+
+      - name: Upload report.json
+        uses: actions/upload-artifact@v4
+        with:
+          name: report-json
+          path: report.json
+
+      - name: Upload summary.md
+        uses: actions/upload-artifact@v4
+        with:
+          name: summary-markdown
+          path: summary.md
+
+          
+      - name: Comment PR with summary
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const summary = fs.readFileSync('summary.md', 'utf8');
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: summary
+            });
