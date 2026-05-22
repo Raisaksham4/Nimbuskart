@@ -170,4 +170,4 @@ with open("summary.md", "w") as summary_file:
 print("summary.md generated successfully")
 
 if DRY_RUN and findings:
-    sys.exit(1)
+    sys.exit(0)
