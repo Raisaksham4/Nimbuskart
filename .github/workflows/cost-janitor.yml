@@ -8,7 +8,6 @@ jobs:
   janitor:
     runs-on: ubuntu-latest
     steps:
-
       - name: Start LocalStack
         run: |
           docker run -d --name localstack-main \
@@ -17,8 +16,16 @@ jobs:
             -e DEBUG=1 \
             localstack/localstack
 
-          sleep 15
+          echo "Waiting for LocalStack..."
 
+          for i in {1..30}; do
+            if curl -s http://localhost:4566/_localstack/health | grep '"initialized": true'; then
+              echo "LocalStack is ready!"
+              break
+            fi
+
+            sleep 5
+          done
 
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -61,7 +68,6 @@ jobs:
           name: summary-markdown
           path: summary.md
 
-          
       - name: Comment PR with summary
         if: github.event_name == 'pull_request'
         uses: actions/github-script@v7
