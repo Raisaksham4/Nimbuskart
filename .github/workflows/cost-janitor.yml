@@ -14,7 +14,7 @@ jobs:
             -p 4566:4566 \
             -e SERVICES=ec2,s3,iam \
             -e DEBUG=1 \
-            localstack/localstack
+            localstack/localstack:3.5
 
           echo "Waiting for LocalStack..."
 
