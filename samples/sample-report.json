@@ -1,0 +1,28 @@
+{
+  "scan_timestamp": "2026-05-22T19:41:03.680300+00:00",
+  "account_id": "000000000000",
+  "region": "us-east-1",
+  "mode": "dry-run",
+  "summary": {
+    "total_orphans": 1,
+    "estimated_monthly_waste_usd": 0.64
+  },
+  "findings": [
+    {
+      "resource_id": "vol-3030800e",
+      "resource_type": "ebs_volume",
+      "reason": "unattached",
+      "age_days": 0,
+      "estimated_monthly_cost_usd": 0.64,
+      "tags": {
+        "Name": "orphan-ebs-volume",
+        "ManagedBy": "terraform",
+        "Environment": "staging",
+        "Owner": "Saksham",
+        "Project": "NimbusKart"
+      },
+      "suggested_action": "delete",
+      "safe_to_auto_delete": true
+    }
+  ]
+}
