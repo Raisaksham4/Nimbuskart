@@ -7,17 +7,19 @@ on:
 jobs:
   janitor:
     runs-on: ubuntu-latest
-
-    services:
-      localstack:
-        image: localstack/localstack
-        ports:
-          - 4566:4566
-        env:
-            SERVICES: ec2,s3,iam
-            DEBUG: 1  
-
     steps:
+
+      - name: Start LocalStack
+        run: |
+          docker run -d --name localstack-main \
+            -p 4566:4566 \
+            -e SERVICES=ec2,s3,iam \
+            -e DEBUG=1 \
+            localstack/localstack
+
+          sleep 15
+
+
       - name: Checkout repository
         uses: actions/checkout@v4
 
