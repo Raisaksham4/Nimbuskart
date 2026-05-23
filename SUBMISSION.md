@@ -98,18 +98,6 @@ The implementation was intentionally optimized for reproducibility and demonstra
 
 ---
 
-### LocalStack Instead of Real AWS
-
-The project uses LocalStack for infrastructure simulation instead of real AWS accounts.
-
-Reasoning:
-- avoids cloud costs
-- enables deterministic CI testing
-- allows reproducible infrastructure workflows
-- safer for automated provisioning/deletion
-
----
-
 ### Conservative Delete Design
 
 Although delete mode exists, destructive behavior was intentionally kept conservative.
