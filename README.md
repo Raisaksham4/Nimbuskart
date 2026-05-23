@@ -101,3 +101,17 @@ samples/
 
 - `sample-report.json`
 - `sample-summary.md`
+
+
+## AI Usage Disclosure
+
+AI tools were used during development for:
+
+- debugging GitHub Actions and LocalStack issues
+- Terraform and AWS provider troubleshooting
+- improving documentation structure
+- refining report formatting and workflow setup
+
+One issue suggested incorrectly during development was related to S3 path-style configuration. The actual root cause was a LocalStack container licensing/runtime issue discovered through CI log inspection.
+
+The core janitor detection flow and resource scanning logic were manually reviewed, modified, and tested during implementation to ensure the behavior matched the assignment requirements.
