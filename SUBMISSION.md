@@ -73,6 +73,84 @@ samples/
 
 ---
 
+## Decisions and Deviations
+
+### Dry-Run as Default
+
+The janitor defaults to dry-run mode to prevent accidental destructive actions during testing and CI execution.
+
+Delete behavior requires an explicit `--delete` flag.
+
+This decision prioritizes operational safety over aggressive automation.
+
+---
+
+### Simplified Cost Estimation
+
+Monthly waste estimates use simplified static pricing values instead of live AWS pricing APIs.
+
+Reasoning:
+- reduces complexity
+- avoids external API dependencies
+- keeps LocalStack-based testing deterministic
+
+The implementation was intentionally optimized for reproducibility and demonstration purposes.
+
+---
+
+### LocalStack Instead of Real AWS
+
+The project uses LocalStack for infrastructure simulation instead of real AWS accounts.
+
+Reasoning:
+- avoids cloud costs
+- enables deterministic CI testing
+- allows reproducible infrastructure workflows
+- safer for automated provisioning/deletion
+
+---
+
+### Conservative Delete Design
+
+Although delete mode exists, destructive behavior was intentionally kept conservative.
+
+Resources are marked with:
+- `safe_to_auto_delete`
+- `suggested_action`
+
+before any remediation logic is applied.
+
+This reduces risk from false positives.
+
+---
+
+### Limited Resource Coverage
+
+The implementation currently focuses on:
+
+- unattached EBS volumes
+- stopped EC2 instances
+- unassociated Elastic IPs
+
+instead of attempting broad AWS coverage.
+
+Reasoning:
+- prioritizing reliability and correctness
+- keeping the project maintainable
+- ensuring CI reproducibility within assignment scope
+
+---
+
+### GitHub Actions Behavior
+
+The workflow uploads artifacts even when orphaned resources are detected.
+
+The pipeline was intentionally designed to surface findings instead of failing infrastructure execution entirely.
+
+This improves debugging and operational visibility.
+
+---
+
 ## Assumptions
 
 - LocalStack is used instead of real AWS accounts
