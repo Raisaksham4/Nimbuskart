@@ -101,12 +101,3 @@ samples/
 
 - `sample-report.json`
 - `sample-summary.md`
-
-## Future Improvements
-
-- Slack/Discord notifications
-- Multi-account AWS scanning
-- CloudWatch integration
-- Cost Explorer integration
-- Automated cleanup scheduling
-- Additional orphan resource detection
