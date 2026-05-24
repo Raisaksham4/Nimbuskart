@@ -96,6 +96,18 @@ Delete mode requires explicit CLI usage:
 python janitor/janitor.py --delete
 ```
 
+## Cost Estimation Notes
+
+Static pricing values were used for simplified monthly waste estimation.
+
+Reference pricing:
+- AWS gp3 EBS pricing: approximately $0.08 per GB-month
+- Elastic IP pricing: simplified flat estimate for demonstration purposes
+
+Pricing references:
+https://aws.amazon.com/ebs/pricing/
+https://aws.amazon.com/vpc/pricing/
+
 ## Future Improvements
 
 Potential future enhancements include:

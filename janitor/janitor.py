@@ -54,6 +54,7 @@ for address in addresses["Addresses"]:
             "resource_id": address["AllocationId"],
             "resource_type": "elastic_ip",
             "reason": "unassociated_eip",
+            "age_days": 0,
             "estimated_monthly_cost_usd": 3.0,
             "suggested_action": "release",
             "safe_to_auto_delete": True,
