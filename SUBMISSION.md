@@ -1,156 +1,51 @@
-# Submission Notes
+# Submission — DevOps Engineer Assignment
 
-## Project Summary
+Candidate Name: Saksham Rai  
+Email: raisaksham204@gmail.com  
+Date submitted: 2026-05-24  
+Hours spent (approximate): 18–22 hours
 
-NimbusKart Cost Hygiene Automation is a DevOps-focused cloud cost optimization project that detects orphaned AWS resources using Python automation, Terraform, LocalStack, and GitHub Actions.
+## Deliverables checklist
 
-The project identifies:
+- [x] Part A: Terraform code under /terraform applies cleanly on LocalStack
+- [x] Part A: `terraform validate` and `terraform fmt -check` both pass
+- [x] Part B: Janitor script runs in --dry-run mode and produces report.json
+- [x] Part B: GitHub Actions workflow runs green on a fresh PR
+- [x] Part B: --delete mode respects Protected=true tag
+- [x] Part C: DESIGN.md is present and within 2 pages
+- [x] Walkthrough video link below is accessible (unlisted is fine)
 
-- unattached EBS volumes
-- stopped EC2 instances
-- unassociated Elastic IPs
-- missing required tags
+## Walkthrough video
 
-and generates both JSON and Markdown reports.
+Link (Google Drive):  
 
----
 
-## Repository Structure
+Length: max 5 minutes
 
-```text
-.
-├── .github/workflows/
-├── janitor/
-├── terraform/
-├── samples/
-├── README.md
-├── DESIGN.md
-└── SUBMISSION.md
-```
+## Sample report
 
----
-
-## Features Implemented
-
-- Infrastructure provisioning with Terraform
-- Local AWS emulation using LocalStack
-- Automated orphan detection
-- Estimated monthly waste calculation
-- Missing tag validation
-- Dry-run mode
-- Delete mode
-- JSON report generation
-- Markdown summary generation
-- GitHub Actions CI workflow
-- Artifact uploads in CI
-
----
-
-## CI/CD Workflow
-
-The GitHub Actions pipeline:
-
-1. Starts LocalStack
-2. Initializes Terraform
-3. Provisions infrastructure
-4. Runs janitor scans
-5. Uploads generated reports
-
-Artifacts produced:
-
-- report.json
-- summary.md
-
----
-
-## Sample Outputs
-
-Sample outputs are available in:
+Path to a sample report.json produced by your script:
 
 ```text
-samples/
+samples/report.example.json
 ```
 
----
+## Known limitations
 
-## Decisions and Deviations
+- Cost estimation uses simplified static pricing values instead of real AWS billing APIs.
+- The implementation currently supports only EC2 instances, EBS volumes, and Elastic IP detection.
+- LocalStack behavior differs slightly from real AWS behavior for some services.
+- The project is designed for demonstration/testing scope and not production-scale orchestration.
 
-### Dry-Run as Default
+## AI usage disclosure
 
-The janitor defaults to dry-run mode to prevent accidental destructive actions during testing and CI execution.
+AI tools were used during development for:
 
-Delete behavior requires an explicit `--delete` flag.
+- debugging GitHub Actions and LocalStack issues
+- Terraform and AWS provider troubleshooting
+- improving documentation structure
+- refining report formatting and workflow setup
 
-This decision prioritizes operational safety over aggressive automation.
+One issue suggested incorrectly during development was related to S3 path-style configuration. The actual root cause was a LocalStack container licensing/runtime issue discovered through CI log inspection.
 
----
-
-### Simplified Cost Estimation
-
-Monthly waste estimates use simplified static pricing values instead of live AWS pricing APIs.
-
-Reasoning:
-- reduces complexity
-- avoids external API dependencies
-- keeps LocalStack-based testing deterministic
-
-The implementation was intentionally optimized for reproducibility and demonstration purposes.
-
----
-
-### Conservative Delete Design
-
-Although delete mode exists, destructive behavior was intentionally kept conservative.
-
-Resources are marked with:
-- `safe_to_auto_delete`
-- `suggested_action`
-
-before any remediation logic is applied.
-
-This reduces risk from false positives.
-
----
-
-### Limited Resource Coverage
-
-The implementation currently focuses on:
-
-- unattached EBS volumes
-- stopped EC2 instances
-- unassociated Elastic IPs
-
-instead of attempting broad AWS coverage.
-
-Reasoning:
-- prioritizing reliability and correctness
-- keeping the project maintainable
-- ensuring CI reproducibility within assignment scope
-
----
-
-### GitHub Actions Behavior
-
-The workflow uploads artifacts even when orphaned resources are detected.
-
-The pipeline was intentionally designed to surface findings instead of failing infrastructure execution entirely.
-
-This improves debugging and operational visibility.
-
----
-
-## Assumptions
-
-- LocalStack is used instead of real AWS accounts
-- Estimated costs are simplified static estimates
-- Dry-run mode is the default behavior
-- Delete mode requires explicit CLI flag
-
----
-
-## Known Limitations
-
-- Limited AWS resource coverage
-- Simplified cost calculations
-- Basic delete workflow
-- No persistence/database layer
+The core janitor detection flow and resource scanning logic were manually reviewed, modified, and tested during implementation to ensure the behavior matched the assignment requirements.
