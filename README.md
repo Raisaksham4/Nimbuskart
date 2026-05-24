@@ -2,55 +2,24 @@
 
 ## Overview
 
-NimbusKart Cost Hygiene Automation is a DevOps-focused cloud cost optimization tool that detects orphaned AWS resources using Python, Terraform, LocalStack, and GitHub Actions.
+NimbusKart Cost Hygiene Automation is a lightweight cloud cost governance project built using Python, Terraform, LocalStack, and GitHub Actions. The tool detects orphaned AWS resources such as unattached EBS volumes, stopped EC2 instances, and unassociated Elastic IPs, then generates JSON and Markdown reports with estimated monthly waste and remediation suggestions.
 
-The tool identifies unused cloud resources, estimates monthly waste, generates reports, and automates infrastructure scanning workflows.
+---
 
-## Features
+## How to run locally
 
-- Detect unattached EBS volumes
-- Detect stopped EC2 instances
-- Detect unassociated Elastic IPs
-- Detect missing mandatory tags
-- Generate JSON reports
-- Generate Markdown summaries
-- Dry-run and delete modes
-- GitHub Actions CI integration
-- Terraform + LocalStack infrastructure automation
+### Clone Repository
 
-## Tech Stack
-
-- Python
-- Terraform
-- LocalStack
-- GitHub Actions
-- AWS SDK (boto3)
-
-## Project Structure
-
-```text
-.
-├── .github/workflows/
-├── janitor/
-├── terraform/
-├── samples/
-├── README.md
+```bash
+git clone <your-repository-url>
+cd nimbuskart-cost-hygiene
 ```
-
-## Local Setup
-
-### Prerequisites
-
-- Python 3.13+
-- Terraform
-- Docker
-- LocalStack
-- terraform-local
 
 ### Install Dependencies
 
 ```bash
 pip install -r janitor/requirements.txt
+pip install terraform-local
 ```
 
 ### Start LocalStack
@@ -59,7 +28,7 @@ pip install -r janitor/requirements.txt
 docker run -d -p 4566:4566 localstack/localstack:3.5
 ```
 
-### Initialize Terraform
+### Apply Terraform Infrastructure
 
 ```bash
 cd terraform
@@ -67,43 +36,71 @@ tflocal init
 tflocal apply -auto-approve
 ```
 
-## Running the Janitor
-
-### Dry Run Mode
+### Run Janitor
 
 ```bash
+cd ..
 python janitor/janitor.py
 ```
 
-### Delete Mode
+### Run Delete Mode
 
 ```bash
 python janitor/janitor.py --delete
 ```
 
-## GitHub Actions Workflow
+---
 
-The project includes a GitHub Actions workflow that:
-
-1. Starts LocalStack
-2. Initializes Terraform infrastructure
-3. Provisions sample AWS resources
-4. Runs the janitor scanner
-5. Uploads generated reports as artifacts
-
-## Sample Outputs
-
-Example outputs are available under:
+## Architecture
 
 ```text
-samples/
+                    +----------------------+
+                    |  GitHub Actions CI   |
+                    +----------+-----------+
+                               |
+                               v
+                    +----------------------+
+                    |     LocalStack       |
+                    |  AWS Cloud Emulator  |
+                    +----------+-----------+
+                               |
+          +--------------------+--------------------+
+          |                                         |
+          v                                         v
++-------------------+                  +-------------------+
+| Terraform         |                  | Python Janitor    |
+| Infrastructure    |                  | Resource Scanner  |
++-------------------+                  +-------------------+
+                                                  |
+                                                  v
+                                   +-----------------------------+
+                                   | JSON + Markdown Reports     |
+                                   +-----------------------------+
 ```
 
-- `sample-report.json`
-- `sample-summary.md`
+---
 
+## Decisions & deviations
 
-## AI Usage Disclosure
+- SSH access from `0.0.0.0/0` was intentionally treated as unsafe because exposing port 22 publicly is not recommended in production environments.
+- Delete mode requires an explicit `--delete` flag because automatic remediation without approval can accidentally remove legitimate infrastructure.
+- Dry-run mode was made the default behavior to reduce the risk of destructive actions during testing and CI execution.
+- Static pricing values were used instead of live AWS pricing APIs because reproducible LocalStack-based testing was prioritized over pricing accuracy.
+- The implementation only scans EBS volumes, EC2 instances, and Elastic IPs because broader AWS coverage would reduce reliability within assignment scope.
+- Additional fields like `missing_tags` and `mode` were added to improve operational visibility without removing required schema fields.
+- GitHub Actions uploads reports even when orphaned resources are detected because visibility and debugging were prioritized over failing the pipeline immediately.
+- Resource deletion logic was intentionally kept conservative because orphan detection can produce false positives in real production environments.
+- A configurable stopped-instance threshold was implemented because temporarily stopped instances should not immediately be classified as waste.
+
+---
+
+## Trade-offs
+
+With one additional week, I would improve the project by adding real AWS pricing API integration, scheduled scans, multi-account support, and broader AWS resource coverage. I would also improve remediation safety with approval-based deletion workflows and persistent scan history storage.
+
+---
+
+## AI usage disclosure
 
 AI tools were used during development for:
 
