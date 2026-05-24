@@ -11,7 +11,7 @@ NimbusKart Cost Hygiene Automation is a lightweight cloud cost governance projec
 ### Clone Repository
 
 ```bash
-git clone <your-repository-url>
+git clone https://github.com/Raisaksham4/Nimbuskart.git
 cd nimbuskart-cost-hygiene
 ```
 
