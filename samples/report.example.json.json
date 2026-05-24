@@ -1,25 +1,60 @@
 {
-  "scan_timestamp": "2026-05-22T19:41:03.680300+00:00",
+  "scan_timestamp": "2026-05-24T06:14:15.529910+00:00",
   "account_id": "000000000000",
   "region": "us-east-1",
   "mode": "dry-run",
   "summary": {
-    "total_orphans": 1,
-    "estimated_monthly_waste_usd": 0.64
+    "total_orphans": 3,
+    "estimated_monthly_waste_usd": 8.64
   },
   "findings": [
     {
-      "resource_id": "vol-3030800e",
-      "resource_type": "ebs_volume",
-      "reason": "unattached",
+      "resource_id": "eipalloc-36859bff",
+      "resource_type": "elastic_ip",
+      "reason": "unassociated_eip",
       "age_days": 0,
-      "estimated_monthly_cost_usd": 0.64,
+      "estimated_monthly_cost_usd": 3.0,
+      "suggested_action": "release",
+      "safe_to_auto_delete": true,
       "tags": {
-        "Name": "orphan-ebs-volume",
-        "ManagedBy": "terraform",
+        "Project": null,
+        "Environment": null,
+        "Owner": null
+      },
+      "missing_tags": [
+        "Project",
+        "Environment",
+        "Owner"
+      ]
+    },
+    {
+      "resource_id": "i-4c1e719cce556814d",
+      "resource_type": "ec2_instance",
+      "reason": "stopped_instance",
+      "estimated_monthly_cost_usd": 5.0,
+      "suggested_action": "terminate",
+      "safe_to_auto_delete": true,
+      "tags": {
         "Environment": "staging",
         "Owner": "Saksham",
+        "Tier": "web",
+        "Name": "nimbuskart-web-2",
+        "ManagedBy": "terraform",
         "Project": "NimbusKart"
+      }
+    },
+    {
+      "resource_id": "vol-58967743",
+      "resource_type": "ebs_volume",
+      "reason": "unattached",
+      "age_days": 2,
+      "estimated_monthly_cost_usd": 0.64,
+      "tags": {
+        "Owner": "Saksham",
+        "ManagedBy": "terraform",
+        "Project": "NimbusKart",
+        "Environment": "staging",
+        "Name": "orphan-ebs-volume"
       },
       "suggested_action": "delete",
       "safe_to_auto_delete": true

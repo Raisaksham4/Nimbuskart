@@ -18,6 +18,7 @@ Hours spent (approximate): 18–22 hours
 ## Walkthrough video
 
 Link (Google Drive):  
+https://drive.google.com/file/d/1NRccu0Mu6JDy0ZNctDtQki--DCjYa-Ii/view?usp=sharing
 
 
 Length: max 5 minutes
